@@ -1,12 +1,10 @@
 import * as React from 'react';
-import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import ListItem from '@mui/material/ListItem';
-import List from '@mui/material/List';
 import './profile.css'
+import { useState } from "react"
+
+import { postData } from '../apicall';
 
 const theme = createTheme();
 
@@ -44,72 +42,31 @@ const RenderItem = ({ props }) => {
 export default function View() {
 
 
-    // const flight_details = [
+    const [firstName, setFirstName] = useState();
+    const [lastName, setlastName] = useState();
+    const [email, setEmail] = useState();
+    const [passengers, setPassengers] = useState();
+    const [adults, setAdults] = useState();
+    const [childs, setChilds] = useState();
+    const [maxPrice, setMaxPrice] = useState();
 
-    //     {
-    //         departure_day: "2023-01-01",
-    //         return_data: "2023-01-01",
-    //         "season": "Winter",
-    //         cabin: "Business",
-    //         price: "2000",
-    //         url: "https://google.com",
-    //         destination: "França"
-    //     },
-    //     {
-    //         departure_day: "2023-01-01",
-    //         return_data: "2023-01-01",
-    //         "season": "Winter",
-    //         cabin: "Business",
-    //         price: "2000",
-    //         url: "https://google.com",
-    //         destination: "França"
-    //     },
-    //     {
-    //         departure_day: "2023-01-01",
-    //         return_data: "2023-01-01",
-    //         "season": "Winter",
-    //         cabin: "Business",
-    //         price: "2000",
-    //         url: "https://google.com",
-    //         destination: "França"
-    //     },
-    //     {
-    //         departure_day: "2023-01-01",
-    //         return_data: "2023-01-01",
-    //         "season": "Winter",
-    //         cabin: "Business",
-    //         price: "2000",
-    //         url: "https://google.com",
-    //         destination: "França"
-    //     },
-    //     {
-    //         departure_day: "2023-01-01",
-    //         return_data: "2023-01-01",
-    //         "season": "Winter",
-    //         cabin: "Business",
-    //         price: "2000",
-    //         url: "https://google.com",
-    //         destination: "França"
-    //     },
-    //     {
-    //         departure_day: "2023-01-01",
-    //         return_data: "2023-01-01",
-    //         "season": "Winter",
-    //         cabin: "Business",
-    //         price: "2000",
-    //         url: "https://google.com",
-    //         destination: "França"
-    //     },
-    //     {
-    //         departure_day: "2023-01-01",
-    //         return_data: "2023-01-01",
-    //         "season": "Winter",
-    //         cabin: "Business",
-    //         price: "2000",
-    //         url: "https://google.com",
-    //         destination: "França"
-    //     },
-    // ]
+
+
+    const handleSave = () => {
+        const user_data = {
+            firstname: firstName,
+            lastname: lastName,
+            email: email,
+            id: 3,
+            //picture: preview.split(',')[1]
+        };
+        const response = postData("http://127.0.0.1:5000/update", user_data)
+        response.then((data) => {
+            console.log(data.data.inserted);
+            //setSignUp(data.data.inserted);
+        })
+
+    };
 
     const styles = {
         paperContainer: {
@@ -121,41 +78,122 @@ export default function View() {
 
         <div class="wrapper bg-white mt-sm-5">
             <h4 class="pb-4 border-bottom">Account settings</h4>
-            <form method="post">
-                <div class="d-flex align-items-start py-3 border-bottom">
-                    <img src="https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                        class="img" alt="" />
-                    <div class="pl-sm-4 pl-2" id="img-section">
-                        <b>Profile Photo</b>
-                        <p>Accepted file type .png. Less than 1MB</p>
-                        <button class="btn button border"><b>Upload</b></button>
+
+            <div class="d-flex align-items-start py-3 border-bottom">
+                <img src="https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+                    class="img" alt="" />
+                <div class="pl-sm-4 pl-2" id="img-section">
+                    <b>Profile Photo</b>
+                    <p>Accepted file type .png. Less than 1MB</p>
+                    <button class="btn button border"><b>Upload</b></button>
+                </div>
+            </div>
+            <div class="py-2">
+                <div class="row py-2">
+                    <div class="col-md-6">
+                        <label for="firstname">First Name</label>
+                        <input
+                            type="text"
+                            id="firstname"
+                            name="firstname"
+                            class="bg-light form-control"
+                            placeholder="Steve"
+                            onChange={(event) => { setFirstName(event.target.value) }}
+
+                        />
+                    </div>
+                    <div class="col-md-6 pt-md-0 pt-3">
+                        <label for="lastname">Last Name</label>
+                        <input
+                            type="text"
+                            id="lastname"
+                            name="lastname"
+                            class="bg-light form-control"
+                            placeholder="Smith"
+                            onChange={(event) => { setlastName(event.target.value) }}
+                        />
                     </div>
                 </div>
-                <div class="py-2">
-                    <div class="row py-2">
-                        <div class="col-md-6">
-                            <label for="firstname">First Name</label>
-                            <input type="text" id="firstname" name="firstname" class="bg-light form-control" placeholder="Steve" />
-                        </div>
-                        <div class="col-md-6 pt-md-0 pt-3">
-                            <label for="lastname">Last Name</label>
-                            <input type="text" id="lastname" name="lastname" class="bg-light form-control" placeholder="Smith" />
-                        </div>
-                    </div>
-                    <div class="row py-2">
-                        <div class="col-md-12">
-                            <label for="email">Email Address</label>
-                            <input type="text" id="email" name="email" class="bg-light form-control" placeholder="steve_@email.com" />
+                <div class="row py-2">
+                    <div class="col-md-12">
+                        <label for="email">Email Address</label>
+                        <input
+                            type="text"
+                            id="email" name="email"
+                            class="bg-light form-control"
+                            placeholder="steve_@email.com"
+                            onChange={(event) => { setEmail(event.target.value) }}
 
-                        </div>
+                        />
 
                     </div>
-                    <div class="row py-2">
-                        <div class="col-md-6">
-                            <label for="passengers">Passengers</label>
-                            <select name="passenger"
-                                id="passengers"
-                                class="bg-light">
+
+                </div>
+                <div class="row py-2">
+                    <div class="col-md-6">
+                        <label for="passengers">Passengers</label>
+                        <select name="passenger"
+                            id="passengers"
+                            class="bg-light"
+                            onChange={(event) => { setPassengers(event.target.value) }}>
+                            <option value="0" selected>0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6 pt-md-0 pt-3">
+                        <label for="max">Max Value</label>
+                        <input type="tel"
+                            id="max"
+                            name="max"
+                            class="bg-light form-control"
+                            placeholder="Maximum Search Value?"
+                            onChange={(event) => { setMaxPrice(event.target.value) }} />
+
+                    </div>
+                </div>
+                <div class="row py-2">
+                    <div class="col-md-6">
+                        <label for="adults">Adults</label>
+                        <select
+                            name="adults"
+                            id="adults"
+                            class="bg-light"
+                            onChange={(event) => { setAdults(event.target.value) }}
+                        >
+
+                            <option value="0" selected>0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 pt-md-0 pt-3">
+                        <label for="child">Child (+3 years old)</label>
+                        <div class="arrow">
+                            <select
+                                name="child"
+                                id="child"
+                                class="bg-light"
+                                onChange={(event) => { setChilds(event.target.value) }}
+                            >
                                 <option value="0" selected>0</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -168,69 +206,23 @@ export default function View() {
                                 <option value="9">9</option>
                                 <option value="10">10</option>
                             </select>
-
-                        </div>
-
-                        <div class="col-md-6 pt-md-0 pt-3">
-                            <label for="max">Max Value</label>
-                            <input type="tel"
-                                id="max"
-                                name="max"
-                                class="bg-light form-control"
-                                placeholder="Maximum Search Value?" />
-
-                        </div>
-                    </div>
-                    <div class="row py-2">
-                        <div class="col-md-6">
-                            <label for="adults">Adults</label>
-                            <select name="adults" id="adults" class="bg-light">
-                                <option value="0" selected>0</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                                <option value="10">10</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 pt-md-0 pt-3">
-                            <label for="child">Child (+3 years old)</label>
-                            <div class="arrow">
-                                <select name="child" id="child" class="bg-light">
-                                    <option value="0" selected>0</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="py-3 pb-4 border-bottom">
-                        <button class="btn btn-primary mr-3" type="submit" value="submit">Save Changes</button>
-                    </div>
-                    <div class="d-sm-flex align-items-center pt-3" id="deactivate">
-                        <div>
-                            <b>Deactivate your account</b>
-                            <p>Details about your company account and password will be deleted!</p>
-                        </div>
-                        <div class="ml-auto">
-                            <button class="btn danger" type="submit" value="submit" href="/login.html">Deactivate</button>
                         </div>
                     </div>
                 </div>
-            </form>
+                <div class="py-3 pb-4 border-bottom">
+                    <button class="btn btn-primary mr-3" type="submit" value="submit" onClick={handleSave}>Save Changes</button>
+                </div>
+                <div class="d-sm-flex align-items-center pt-3" id="deactivate">
+                    <div>
+                        <b>Deactivate your account</b>
+                        <p>Details about your company account and password will be deleted!</p>
+                    </div>
+                    <div class="ml-auto">
+                        <button class="btn danger" type="submit" value="submit" href="/login.html">Deactivate</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
 
