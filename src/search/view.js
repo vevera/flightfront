@@ -2,8 +2,8 @@ import * as React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import './profile.css'
-import { useState } from "react"
-
+import { useState, useEffect } from "react"
+import { useLocation, useNavigate } from 'react-router-dom';
 import { postData } from '../apicall';
 
 const theme = createTheme();
@@ -41,17 +41,22 @@ const RenderItem = ({ props }) => {
 
 export default function View() {
 
+    const { state } = useLocation();
+    const navigate = useNavigate();
+    //const [state, setState] = useState();
 
-    const [firstName, setFirstName] = useState();
-    const [lastName, setlastName] = useState();
-    const [email, setEmail] = useState();
+    const [firstName, setFirstName] = useState(state.firstname || null);
+    const [lastName, setlastName] = useState(state.lastname || null);
+    const [email, setEmail] = useState(state.email || null);
     const [passengers, setPassengers] = useState();
     const [adults, setAdults] = useState();
     const [childs, setChilds] = useState();
     const [maxPrice, setMaxPrice] = useState();
 
 
-
+    //const { id, color } = state;
+    // console.log(id);
+    // console.log(color);
     const handleSave = () => {
         const user_data = {
             firstname: firstName,
@@ -62,17 +67,19 @@ export default function View() {
         };
         const response = postData("http://127.0.0.1:5000/update", user_data)
         response.then((data) => {
-            console.log(data.data.inserted);
+            navigate('/search', { state: data.data });
+            //setState(data.data);
             //setSignUp(data.data.inserted);
         })
 
     };
 
-    const styles = {
-        paperContainer: {
-            backgroundImage: `url(${Image})`
-        }
-    };
+    // useEffect(() => {
+    //     if (stateRoute) {
+    //         setState(stateRoute.firstname);
+    //     }
+
+    // }, []);
 
     return (
 
@@ -97,7 +104,8 @@ export default function View() {
                             id="firstname"
                             name="firstname"
                             class="bg-light form-control"
-                            placeholder="Steve"
+                            placeholder={state.firstname}
+                            value={firstName}
                             onChange={(event) => { setFirstName(event.target.value) }}
 
                         />
@@ -109,7 +117,8 @@ export default function View() {
                             id="lastname"
                             name="lastname"
                             class="bg-light form-control"
-                            placeholder="Smith"
+                            placeholder={state.lastname}
+                            value={lastName}
                             onChange={(event) => { setlastName(event.target.value) }}
                         />
                     </div>
@@ -121,7 +130,8 @@ export default function View() {
                             type="text"
                             id="email" name="email"
                             class="bg-light form-control"
-                            placeholder="steve_@email.com"
+                            placeholder={state.email}
+                            value={email}
                             onChange={(event) => { setEmail(event.target.value) }}
 
                         />
@@ -131,12 +141,13 @@ export default function View() {
                 </div>
                 <div class="row py-2">
                     <div class="col-md-6">
-                        <label for="passengers">Passengers</label>
+                        <label for="passengers">Babies</label>
                         <select name="passenger"
                             id="passengers"
                             class="bg-light"
+                            defaultValue={state.baby || 'Select'}
                             onChange={(event) => { setPassengers(event.target.value) }}>
-                            <option value="0" selected>0</option>
+                            <option value="0">0</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -169,6 +180,7 @@ export default function View() {
                             name="adults"
                             id="adults"
                             class="bg-light"
+                            defaultValue={state.adults || 'Select'}
                             onChange={(event) => { setAdults(event.target.value) }}
                         >
 
@@ -192,6 +204,7 @@ export default function View() {
                                 name="child"
                                 id="child"
                                 class="bg-light"
+                                defaultValue={state.child || 'Select'}
                                 onChange={(event) => { setChilds(event.target.value) }}
                             >
                                 <option value="0" selected>0</option>
@@ -214,11 +227,11 @@ export default function View() {
                 </div>
                 <div class="d-sm-flex align-items-center pt-3" id="deactivate">
                     <div>
-                        <b>Deactivate your account</b>
-                        <p>Details about your company account and password will be deleted!</p>
+                        <b>Start Search</b>
+                        <p>We'll send to your email when we found a good deal!</p>
                     </div>
                     <div class="ml-auto">
-                        <button class="btn danger" type="submit" value="submit" href="/login.html">Deactivate</button>
+                        <button class="btn danger" type="submit" value="submit" href="/login.html">Start</button>
                     </div>
                 </div>
             </div>

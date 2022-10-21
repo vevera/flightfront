@@ -36,6 +36,7 @@ export default function Auth() {
 
     const [auth, setAuth] = useState(false);
     const navigate = useNavigate();
+    const [userData, setUserData] = useState();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -46,15 +47,21 @@ export default function Auth() {
         };
         console.log(auth)
         const response = postData("http://127.0.0.1:5000/login", auth)
-        response.then((data) => setAuth(data.data.inserted))
+        response.then((data) => {
+
+            setUserData(data.data);
+            //setAuth(data.data.inserted);
+        })
 
     };
 
     useEffect(() => {
-        if (auth) {
-            navigate('/search');
+        if (userData && userData.inserted) {
+
+            // { state: userData }
+            navigate('/search', { state: userData });
         }
-    }, [auth])
+    }, [userData])
 
     return (
         <ThemeProvider theme={theme}>
