@@ -45,9 +45,9 @@ export default function View() {
     const navigate = useNavigate();
     //const [state, setState] = useState();
 
-    const [firstName, setFirstName] = useState(state.firstname || null);
-    const [lastName, setlastName] = useState(state.lastname || null);
-    const [email, setEmail] = useState(state.email || null);
+    const [firstName, setFirstName] = useState(state ? state.firstname : null);
+    const [lastName, setlastName] = useState(state ? state.lastname : null);
+    const [email, setEmail] = useState(state ? state.email : null);
     const [passengers, setPassengers] = useState();
     const [adults, setAdults] = useState();
     const [childs, setChilds] = useState();
@@ -74,12 +74,12 @@ export default function View() {
 
     };
 
-    // useEffect(() => {
-    //     if (stateRoute) {
-    //         setState(stateRoute.firstname);
-    //     }
+    useEffect(() => {
+        if (state == null) {
+            navigate("/signin");
+        }
 
-    // }, []);
+    }, [state]);
 
     return (
 
@@ -104,7 +104,7 @@ export default function View() {
                             id="firstname"
                             name="firstname"
                             class="bg-light form-control"
-                            placeholder={state.firstname}
+                            placeholder={state ? state.firstname : null}
                             value={firstName}
                             onChange={(event) => { setFirstName(event.target.value) }}
 
@@ -117,7 +117,7 @@ export default function View() {
                             id="lastname"
                             name="lastname"
                             class="bg-light form-control"
-                            placeholder={state.lastname}
+                            placeholder={state ? state.lastname : null}
                             value={lastName}
                             onChange={(event) => { setlastName(event.target.value) }}
                         />
@@ -130,7 +130,7 @@ export default function View() {
                             type="text"
                             id="email" name="email"
                             class="bg-light form-control"
-                            placeholder={state.email}
+                            placeholder={state ? state.email : null}
                             value={email}
                             onChange={(event) => { setEmail(event.target.value) }}
 
@@ -145,7 +145,7 @@ export default function View() {
                         <select name="passenger"
                             id="passengers"
                             class="bg-light"
-                            defaultValue={state.baby || 'Select'}
+                            defaultValue={state ? state.baby : 'Select'}
                             onChange={(event) => { setPassengers(event.target.value) }}>
                             <option value="0">0</option>
                             <option value="1">1</option>
@@ -180,7 +180,7 @@ export default function View() {
                             name="adults"
                             id="adults"
                             class="bg-light"
-                            defaultValue={state.adults || 'Select'}
+                            defaultValue={state ? state.adults : 'Select'}
                             onChange={(event) => { setAdults(event.target.value) }}
                         >
 
@@ -204,7 +204,7 @@ export default function View() {
                                 name="child"
                                 id="child"
                                 class="bg-light"
-                                defaultValue={state.child || 'Select'}
+                                defaultValue={state ? state.child : 'Select'}
                                 onChange={(event) => { setChilds(event.target.value) }}
                             >
                                 <option value="0" selected>0</option>

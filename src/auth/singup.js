@@ -39,13 +39,21 @@ export default function SignUp() {
     const [picture, setPicture] = useState(undefined);
     const [preview, setPreview] = useState(undefined);
     const [selectedFile, setSelectedFile] = useState(false);
-    const [signup, setSignUp] = useState(false);
+    const [userData, serUserData] = useState(null);
+    const [wrongPass, setWrongPass] = useState(false);
 
     const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+
+        if (data.get('password') != data.get('cpassword')) {
+            setWrongPass(true);
+            return;
+        }
+
+        setWrongPass(false);
         const user = {
             username: data.get('username'),
             password: data.get('password'),
@@ -57,10 +65,11 @@ export default function SignUp() {
             email: data.get('email'),
             //picture: preview.split(',')[1]
         };
+
         const response = postData("http://127.0.0.1:5000/signup", user)
         response.then((data) => {
-            console.log(data.data.inserted);
-            setSignUp(data.data.inserted);
+            serUserData(data.data);
+            //
         })
     };
 
@@ -73,21 +82,30 @@ export default function SignUp() {
         var reader = new FileReader();
         reader.onloadend = (e) => {
             setPreview(reader.result);
-            //console.log(JSON.parse(reader.result));
         }
         var url = reader.readAsDataURL(picture);
     }, [selectedFile])
 
     useEffect(() => {
-        if (signup) {
-            navigate('/search');
+        if (userData && userData.inserted) {
+            console.log("UserData: ", userData);
+            navigate('/search', { state: userData });
         }
-    }, [signup])
+    }, [userData])
 
     const onDrop = (picture) => {
         setPicture(picture);
         setSelectedFile(true)
     }
+
+    const styles = {
+        root: {
+            '& .MuiFormLabel-root.Mui-disabled': {
+                color: 'red',
+            },
+        }
+    }
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -218,10 +236,16 @@ export default function SignUp() {
                                     autoComplete="new-password"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid
+                                item xs={12}
+                            >
                                 <TextField
                                     required
                                     fullWidth
+
+                                    sx={{
+                                        input: { color: wrongPass ? 'red' : "black" }
+                                    }}
                                     name="cpassword"
                                     label="Confirm your password"
                                     type="password"

@@ -35,9 +35,9 @@ export default function Home() {
         <div class="box-form" style={{ marginTop: 50 }}>
             <div class="left">
                 <div class="overlay">
-                    <h1>Hello World.</h1>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Curabitur et est sed felis aliquet sollicitudin</p>
+                    <h1>Flight Search.</h1>
+                    <p>FRASE DE EFEITO
+                    </p>
                     <span onClick={() => { navigate('/signin') }}>
                         <a href=""><i class="fa fa" aria-hidden="true"></i> 	Login</a>
                     </span>
@@ -60,7 +60,7 @@ export default function Home() {
 
                 </span>
 
-                <button type="submit" style={{ marginTop: 145 }} >
+                {/* <button type="submit" style={{ marginTop: 145 }} >
 
                     <a href='https://google.com' style={{ color: 'white' }}>
                         <i class="fa fa-shopping-cart" aria-hidden="true"></i>
@@ -68,7 +68,7 @@ export default function Home() {
 
                     </a>
 
-                </button>
+                </button> */}
 
             </div>
         </div>
