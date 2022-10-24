@@ -63,7 +63,7 @@ export default function SignUp() {
             adults: data.get('adults'),
             children: data.get('children'),
             email: data.get('email'),
-            //picture: preview.split(',')[1]
+            picture: preview.split(',')[1]
         };
 
         const response = postData("http://127.0.0.1:5000/signup", user)

@@ -53,7 +53,9 @@ export default function View() {
     const [childs, setChilds] = useState();
     const [maxPrice, setMaxPrice] = useState();
 
-
+    const [picture, setPicture] = useState(undefined);
+    const [preview, setPreview] = useState(undefined);
+    const [selectedFile, setSelectedFile] = useState(false);
     //const { id, color } = state;
     // console.log(id);
     // console.log(color);
@@ -63,6 +65,7 @@ export default function View() {
             lastname: lastName,
             email: email,
             id: 3,
+            picture: preview ? preview.split(',')[1] : ""
             //picture: preview.split(',')[1]
         };
         const response = postData("http://127.0.0.1:5000/update", user_data)
@@ -74,6 +77,9 @@ export default function View() {
 
     };
 
+
+
+
     useEffect(() => {
         if (state == null) {
             navigate("/signin");
@@ -81,18 +87,47 @@ export default function View() {
 
     }, [state]);
 
+
+    useEffect(() => {
+        if (!selectedFile) {
+            setPreview(undefined)
+            return
+        }
+        var reader = new FileReader();
+        reader.onloadend = (e) => {
+            setPreview(reader.result);
+        }
+        var url = reader.readAsDataURL(picture);
+    }, [selectedFile])
+
+    const onDrop = (picture) => {
+        setPicture(picture);
+        setSelectedFile(true)
+    }
     return (
 
         <div class="wrapper bg-white mt-sm-5">
+            <input
+                id="filePicker2"
+                style={{ visibility: "hidden" }}
+                type="file"
+            // onChange={(event) => {
+            //     onDrop(event.target.files[0]);
+            // }}
+            />
             <h4 class="pb-4 border-bottom">Account settings</h4>
 
             <div class="d-flex align-items-start py-3 border-bottom">
-                <img src="https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+                <img src={preview ? preview : state.pic}
                     class="img" alt="" />
                 <div class="pl-sm-4 pl-2" id="img-section">
                     <b>Profile Photo</b>
                     <p>Accepted file type .png. Less than 1MB</p>
-                    <button class="btn button border"><b>Upload</b></button>
+                    <label class="btn button border" htmlFor="filePicker2">
+                        <b>Upload</b>
+                    </label>
+
+
                 </div>
             </div>
             <div class="py-2">
