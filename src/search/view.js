@@ -44,14 +44,18 @@ export default function View() {
     const { state } = useLocation();
     const navigate = useNavigate();
     //const [state, setState] = useState();
-
+    //console.log(state);
     const [firstName, setFirstName] = useState(state ? state.firstname : null);
     const [lastName, setlastName] = useState(state ? state.lastname : null);
     const [email, setEmail] = useState(state ? state.email : null);
-    const [passengers, setPassengers] = useState();
-    const [adults, setAdults] = useState();
-    const [childs, setChilds] = useState();
+    const [babies, setBabies] = useState(state ? state.baby : 0);
+    const [adults, setAdults] = useState(state ? state.adults : 1);
+    const [childs, setChilds] = useState(state ? state.child : 0);
     const [maxPrice, setMaxPrice] = useState();
+    const [departure, setDeparture] = useState();
+    const [businessPrice, setBusinessPrice] = useState();
+    const [economyPrice, setEconomyPrice] = useState();
+
 
     const [picture, setPicture] = useState(undefined);
     const [preview, setPreview] = useState(undefined);
@@ -61,10 +65,11 @@ export default function View() {
     // console.log(color);
     const handleSave = () => {
         const user_data = {
+            username: state.username,
             firstname: firstName,
             lastname: lastName,
             email: email,
-            id: 3,
+            id: state.id,
             picture: preview ? preview.split(',')[1] : ""
             //picture: preview.split(',')[1]
         };
@@ -74,6 +79,34 @@ export default function View() {
             //setState(data.data);
             //setSignUp(data.data.inserted);
         })
+
+    };
+
+    const handleSearch = () => {
+
+
+        /**
+         data.username = "daniboy",
+            data.email = "danielsilvaagostinho5@gmail.com"
+            data.city = "fortaleza"
+            data.adults = 1
+            data.kids = 1
+            data.baby = 1
+            data.ECONOMY_PRICE_COMPARE = 60000
+            data.BUSINESS_PRICE_COMPARE = 60000 
+         */
+        const flight_data = {
+            username: state.username,
+            email: state.email,
+            city: departure,
+            adults: adults,
+            kids: childs,
+            baby: babies,
+            ECONOMY_PRICE_COMPARE: economyPrice,
+            BUSINESS_PRICE_COMPARE: businessPrice,
+        };
+        console.log(flight_data)
+        const response = postData("http://127.0.0.1:5000/search", flight_data);
 
     };
 
@@ -111,9 +144,9 @@ export default function View() {
                 id="filePicker2"
                 style={{ visibility: "hidden" }}
                 type="file"
-            // onChange={(event) => {
-            //     onDrop(event.target.files[0]);
-            // }}
+                onChange={(event) => {
+                    onDrop(event.target.files[0]);
+                }}
             />
             <h4 class="pb-4 border-bottom">Account settings</h4>
 
@@ -180,8 +213,9 @@ export default function View() {
                         <select name="passenger"
                             id="passengers"
                             class="bg-light"
+                            value={babies}
                             defaultValue={state ? state.baby : 'Select'}
-                            onChange={(event) => { setPassengers(event.target.value) }}>
+                            onChange={(event) => { setBabies(event.target.value) }}>
                             <option value="0">0</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -198,13 +232,13 @@ export default function View() {
                     </div>
 
                     <div class="col-md-6 pt-md-0 pt-3">
-                        <label for="max">Max Value</label>
-                        <input type="tel"
+                        <label for="max">Departure City</label>
+                        <input type="text"
                             id="max"
                             name="max"
                             class="bg-light form-control"
-                            placeholder="Maximum Search Value?"
-                            onChange={(event) => { setMaxPrice(event.target.value) }} />
+                            placeholder="Departure City?"
+                            onChange={(event) => { setDeparture(event.target.value) }} />
 
                     </div>
                 </div>
@@ -215,6 +249,7 @@ export default function View() {
                             name="adults"
                             id="adults"
                             class="bg-light"
+                            value={adults}
                             defaultValue={state ? state.adults : 'Select'}
                             onChange={(event) => { setAdults(event.target.value) }}
                         >
@@ -239,6 +274,7 @@ export default function View() {
                                 name="child"
                                 id="child"
                                 class="bg-light"
+                                value={childs}
                                 defaultValue={state ? state.child : 'Select'}
                                 onChange={(event) => { setChilds(event.target.value) }}
                             >
@@ -256,6 +292,28 @@ export default function View() {
                             </select>
                         </div>
                     </div>
+
+                    <div class="col-md-6 pt-md-0 pt-3">
+                        <label for="max">Business Price</label>
+                        <input type="tel"
+                            id="max"
+                            name="max"
+                            class="bg-light form-control"
+                            placeholder="Maximum Business Price?"
+                            onChange={(event) => { setBusinessPrice(event.target.value) }} />
+
+                    </div>
+
+                    <div class="col-md-6 pt-md-0 pt-3">
+                        <label for="max">Economy Price</label>
+                        <input type="tel"
+                            id="max"
+                            name="max"
+                            class="bg-light form-control"
+                            placeholder="Maximum Economy Price?"
+                            onChange={(event) => { setEconomyPrice(event.target.value) }} />
+
+                    </div>
                 </div>
                 <div class="py-3 pb-4 border-bottom">
                     <button class="btn btn-primary mr-3" type="submit" value="submit" onClick={handleSave}>Save Changes</button>
@@ -266,7 +324,7 @@ export default function View() {
                         <p>We'll send to your email when we found a good deal!</p>
                     </div>
                     <div class="ml-auto">
-                        <button class="btn danger" type="submit" value="submit" href="/login.html">Start</button>
+                        <button class="btn danger" type="submit" value="submit" href="/login.html" onClick={handleSearch}>Start</button>
                     </div>
                 </div>
             </div>

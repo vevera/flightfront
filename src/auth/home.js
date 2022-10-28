@@ -36,7 +36,7 @@ export default function Home() {
             <div class="left">
                 <div class="overlay">
                     <h1>Flight Search.</h1>
-                    <p>FRASE DE EFEITO
+                    <p>A melhor viagem que cabe no seu bolso!
                     </p>
                     <span onClick={() => { navigate('/signin') }}>
                         <a href=""><i class="fa fa" aria-hidden="true"></i> 	Login</a>
@@ -45,10 +45,10 @@ export default function Home() {
             </div>
             <div class="right" style={{ marginTop: 40, display: "flex", flexDirection: 'column' }}>
 
-                <h2>
+                {/* <h2>
                     Cidade
-                </h2>
-                <span style={{ paddingLeft: 20, paddingTop: 7 }}>
+                </h2> */}
+                {/* <span style={{ paddingLeft: 20, paddingTop: 7 }}>
                     <p>
                         Saida: 10/10/2020
                     </p>
@@ -58,7 +58,7 @@ export default function Home() {
                     <p>Preço: 10000R$</p>
                     <p>quantidade para três pessoas</p>
 
-                </span>
+                </span> */}
 
                 {/* <button type="submit" style={{ marginTop: 145 }} >
 
